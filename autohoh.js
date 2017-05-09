@@ -1,5 +1,5 @@
 autohoh = {
-	interFace : "<span id=\"autohoh_praise\" onclick=\"autohoh.togglePraise()\">Autopraise: <a href=\"#\">off</a></span><br><span id=\"autohoh_hunt\" onclick=\"autohoh.toggleHunt()\">Autohunt: <a href=\"#\">off</a></span><br><span onclick=\"autohoh.editCrafting()\">Autocraft: <a href=\"#\">edit</a></span>", //HTML blob, but it is small enough to be managable
+	interFace : "<span id=\"autohoh_praise\" onclick=\"autohoh.togglePraise()\"></span><br><span id=\"autohoh_hunt\" onclick=\"autohoh.toggleHunt()\"></span><br><span onclick=\"autohoh.editCrafting()\">Autocraft: <a href=\"#\">edit</a></span>", //HTML blob, but it is small enough to be managable
 	setup : function(){
 		var marsa = document.getElementById("rightTabLog");
 		marsa.innerHTML = this.interFace + marsa.innerHTML; //preserve the stuff in the right tab, but insert our script interface
@@ -16,10 +16,9 @@ autohoh = {
 			var craftingTable = document.getElementById("craftContainer").childNodes[0];
 			for(var i=0;i<autohoh.craftList.length;i++){//for all the things you want to craft
 				for(var j=0;j<craftingTable.childNodes.length;j++){//find it in the craft table
-					var part = craftingTable.childNodes[j].childNodes[0].innerHTML.length-1;//stupid way to trim the ":" character
 					if(
 						autohoh.craftList[i]
-						=== craftingTable.childNodes[j].childNodes[0].innerHTML.substring(0,part)
+						=== craftingTable.childNodes[j].childNodes[0].innerHTML.substring(0,autohoh.craftList[i].length)
 					){
 						craftingTable.childNodes[j].childNodes[5].childNodes[0].click();//click the "all" button
 						break;
@@ -27,9 +26,10 @@ autohoh = {
 				};
 			};
 		},15000);//I think it is no need to make this time customizable. Change it yourself if you wish.
+		this.toggleHunt();this.togglePraise();
 	},
-	autoPraise : false,
-	autoHunt : false,
+	autoPraise : true,
+	autoHunt : true,
 	togglePraise : function(){
 		if(this.autoPraise){
 			this.autoPraise = false;
