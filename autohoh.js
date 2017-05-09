@@ -1,33 +1,39 @@
 autohoh = {
-	interFace : "<span id=\"autohoh_praise\" onclick=\"autohoh.togglePraise()\">Autopraise: <a href=\"#\">off</a></span><br><span id=\"autohoh_hunt\" onclick=\"autohoh.toggleHunt()\">Autohunt: <a href=\"#\">off</a></span><br><span onclick=\"autohoh.editCrafting()\">Autocraft: <a href=\"#\">edit</a></span>",
+	interFace : "<span id=\"autohoh_praise\" onclick=\"autohoh.togglePraise()\">Autopraise: <a href=\"#\">off</a></span><br><span id=\"autohoh_hunt\" onclick=\"autohoh.toggleHunt()\">Autohunt: <a href=\"#\">off</a></span><br><span onclick=\"autohoh.editCrafting()\">Autocraft: <a href=\"#\">edit</a></span>", //HTML blob, but it is small enough to be managable
 	setup : function(){
 		var marsa = document.getElementById("rightTabLog");
-		marsa.innerHTML = this.interFace + marsa.innerHTML;
-		var loop = setInterval(function(){
+		marsa.innerHTML = this.interFace + marsa.innerHTML; //preserve the stuff in the right tab, but insert our script interface
+		var loop = setInterval(function(){//main loop, does crafting and stuff evey 15 seconds.
+
 			if(autohoh.autoPraise){
 				game.religion.praise();
 			};
+
 			if(autohoh.autoHunt){
 				document.getElementById("fastHuntContainer").childNodes[1].click();
 			};
+
 			var craftingTable = document.getElementById("craftContainer").childNodes[0];
-			for(var i=0;i<autohoh.craftList.length;i++){
-				for(var j=0;j<craftingTable.childNodes.length;j++){
-					var part = craftingTable.childNodes[j].childNodes[0].innerHTML.length-1;
-					if(autohoh.craftList[i] === craftingTable.childNodes[j].childNodes[0].innerHTML.substring(0,part)){
-						craftingTable.childNodes[j].childNodes[5].childNodes[0].click();
+			for(var i=0;i<autohoh.craftList.length;i++){//for all the things you want to craft
+				for(var j=0;j<craftingTable.childNodes.length;j++){//find it in the craft table
+					var part = craftingTable.childNodes[j].childNodes[0].innerHTML.length-1;//stupid way to trim the ":" character
+					if(
+						autohoh.craftList[i]
+						=== craftingTable.childNodes[j].childNodes[0].innerHTML.substring(0,part)
+					){
+						craftingTable.childNodes[j].childNodes[5].childNodes[0].click();//click the "all" button
 						break;
 					};
 				};
 			};
-		},15000);
+		},15000);//I think it is no need to make this time customizable. Change it yourself if you wish.
 	},
 	autoPraise : false,
 	autoHunt : false,
 	togglePraise : function(){
 		if(this.autoPraise){
 			this.autoPraise = false;
-			document.getElementById("autohoh_praise").innerHTML = "Autopraise: <a href=\"#\">off</a>";
+			document.getElementById("autohoh_praise").innerHTML = "Autopraise: <a href=\"#\">off</a>";//the <a> stuff is to make it clear it is clickable. It would be fine without it.
 		}
 		else{
 			this.autoPraise = true;
