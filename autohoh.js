@@ -6,11 +6,11 @@ autohoh = {
 		var loop = setInterval(function(){//main loop, does crafting and stuff evey 15 seconds.
 
 			if(autohoh.autoPraise){
-				game.religion.praise();
+				game.religion.praise()
 			};
 
 			if(autohoh.autoHunt){
-				document.getElementById("fastHuntContainer").childNodes[1].click();
+				document.getElementById("fastHuntContainer").childNodes[1].click()
 			};
 
 			var craftingTable = document.getElementById("craftContainer").childNodes[0];
@@ -21,10 +21,10 @@ autohoh = {
 						=== craftingTable.childNodes[j].childNodes[0].innerHTML.substring(0,autohoh.craftList[i].length)
 					){
 						craftingTable.childNodes[j].childNodes[5].childNodes[0].click();//click the "all" button
-						break;
-					};
-				};
-			};
+						break
+					}
+				}
+			}
 		},15000);//I think it is no need to make this time customizable. Change it yourself if you wish.
 		this.toggleHunt();this.togglePraise();
 	},
@@ -33,26 +33,33 @@ autohoh = {
 	togglePraise : function(){
 		if(this.autoPraise){
 			this.autoPraise = false;
-			document.getElementById("autohoh_praise").innerHTML = "Autopraise: <a href=\"#\">off</a>";//the <a> stuff is to make it clear it is clickable. It would be fine without it.
+			document.getElementById("autohoh_praise").innerHTML = "Autopraise: <a href=\"#\">off</a>"//the <a> stuff is to make it clear it is clickable. It would be fine without it.
 		}
 		else{
 			this.autoPraise = true;
-			document.getElementById("autohoh_praise").innerHTML = "Autopraise: <a href=\"#\">on</a>";
+			document.getElementById("autohoh_praise").innerHTML = "Autopraise: <a href=\"#\">on</a>"
 		}
 	},
 	toggleHunt : function(){
 		if(this.autoHunt){
 			this.autoHunt = false;
-			document.getElementById("autohoh_hunt").innerHTML = "Autohunt: <a href=\"#\">off</a>";
+			document.getElementById("autohoh_hunt").innerHTML = "Autohunt: <a href=\"#\">off</a>"
 		}
 		else{
 			this.autoHunt = true;
-			document.getElementById("autohoh_hunt").innerHTML = "Autohunt: <a href=\"#\">on</a>";
+			document.getElementById("autohoh_hunt").innerHTML = "Autohunt: <a href=\"#\">on</a>"
 		}
 	},
 	craftList : [],
 	editCrafting : function(){
-		var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\n Example: steel,plate,eludium");
-		autohoh.craftList = userInput.split(",");
+		if(this.craftList.length < 1){
+			var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\n " + "Example: steel,plate,eludium");
+		}
+		else{
+			var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\n " + "Current: " + this.craftList);
+		};
+		if(userInput != null){//the user may cancel the prompt
+			autohoh.craftList = userInput.split(",");
+		};
 	}
 };autohoh.setup();
