@@ -1,19 +1,22 @@
 autohoh = {
-	interFace : "<span id=\"autohoh_praise\" onclick=\"autohoh.togglePraise()\"></span><br><span id=\"autohoh_hunt\" onclick=\"autohoh.toggleHunt()\"></span><br><span onclick=\"autohoh.editCrafting()\">Autocraft: <a href=\"#\">edit</a></span>", //HTML blob, but it is small enough to be managable
+	interFace : "",
 	setup : function(){
-		var marsa = document.getElementById("rightTabLog");
-		marsa.innerHTML = this.interFace + marsa.innerHTML; //preserve the stuff in the right tab, but insert our script interface
+		this.interFace += "<span>Autopraise: <a href=\"#\" id=\"autohoh_praise\" onclick=\"autohoh.toggle('praise')\">off</a></span><br>";
+		this.interFace += "<span>Autohunt: <a href=\"#\" id=\"autohoh_hunt\" onclick=\"autohoh.toggle('hunt')\">off</a></span><br>";
+		this.interFace += "<span onclick=\"autohoh.editCrafting()\">Autocraft: <a href=\"#\">edit</a></span>";
+		var rightTabContent = document.getElementById("rightTabLog");
+		rightTabContent.innerHTML = this.interFace + rightTabContent.innerHTML; //preserve the stuff in the right tab, but insert our interface
 		var loop = setInterval(function(){//main loop, does crafting and stuff evey 15 seconds.
 
-			if(autohoh.autoPraise){
+			if(autohoh.automation.praise){
 				game.religion.praise()
 			};
 
-			if(autohoh.autoHunt){
+			if(autohoh.automation.hunt){
 				document.getElementById("fastHuntContainer").childNodes[1].click()
 			};
 
-			var craftingTable = document.getElementById("craftContainer").childNodes[0];
+			var craftingTable = document.getElementById("craftContainer").childNodes[0];//this is our hook to the user interface of kg
 			for(var i=0;i<autohoh.craftList.length;i++){//for all the things you want to craft
 				for(var j=0;j<craftingTable.childNodes.length;j++){//find it in the craft table
 					if(
@@ -25,41 +28,35 @@ autohoh = {
 					}
 				}
 			}
-		},15000);//I think it is no need to make this time customizable. Change it yourself if you wish.
-		this.toggleHunt();this.togglePraise();
+		},15000)
 	},
-	autoPraise : true,
-	autoHunt : true,
-	togglePraise : function(){
-		if(this.autoPraise){
-			this.autoPraise = false;
-			document.getElementById("autohoh_praise").innerHTML = "Autopraise: <a href=\"#\">off</a>"//the <a> stuff is to make it clear it is clickable. It would be fine without it.
+
+	automation : {
+		praise : false,
+		hunt : false,
+	},
+	
+	toggle : function(thing){
+		if(this.automation[thing]){
+			this.automation[thing] = false;
+			document.getElementById("autohoh_" + thing).innerHTML = "off"
 		}
 		else{
-			this.autoPraise = true;
-			document.getElementById("autohoh_praise").innerHTML = "Autopraise: <a href=\"#\">on</a>"
+			this.automation[thing] = true;
+			document.getElementById("autohoh_" + thing).innerHTML = "on"
 		}
 	},
-	toggleHunt : function(){
-		if(this.autoHunt){
-			this.autoHunt = false;
-			document.getElementById("autohoh_hunt").innerHTML = "Autohunt: <a href=\"#\">off</a>"
-		}
-		else{
-			this.autoHunt = true;
-			document.getElementById("autohoh_hunt").innerHTML = "Autohunt: <a href=\"#\">on</a>"
-		}
-	},
+
 	craftList : [],
 	editCrafting : function(){
 		if(this.craftList.length < 1){
-			var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\n " + "Example: steel,plate,eludium");
+			var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\n " + "Example: steel,plate,eludium")
 		}
 		else{
-			var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\n " + "Current: " + this.craftList);
+			var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\n " + "Current: " + this.craftList)
 		};
 		if(userInput != null){//the user may cancel the prompt
-			autohoh.craftList = userInput.split(",");
-		};
+			autohoh.craftList = userInput.split(",")
+		}
 	}
 };autohoh.setup();
