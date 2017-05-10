@@ -6,7 +6,7 @@ autohoh = {
 		this.interFace += "<span onclick=\"autohoh.editCrafting()\">Autocraft: <a href=\"#\">edit</a></span>";
 		var rightTabContent = document.getElementById("rightTabLog");
 		rightTabContent.innerHTML = this.interFace + rightTabContent.innerHTML; //preserve the stuff in the right tab, but insert our interface
-		var loop = setInterval(function(){//main loop, does crafting and stuff evey 15 seconds.
+		var loop = setInterval(function(){//main loop, does crafting and other stuff.
 
 			if(autohoh.automation.praise){
 				game.religion.praise()
@@ -16,19 +16,19 @@ autohoh = {
 				document.getElementById("fastHuntContainer").childNodes[1].click()
 			};
 
-			var craftingTable = document.getElementById("craftContainer").childNodes[0];//this is our hook to the user interface of kg
+			var craftingTable = document.getElementById("craftContainer").childNodes[0];//this is our hook to the crafting interface of KG
 			for(var i=0;i<autohoh.craftList.length;i++){//for all the things you want to craft
 				for(var j=0;j<craftingTable.childNodes.length;j++){//find it in the craft table
 					if(
 						autohoh.craftList[i]
 						=== craftingTable.childNodes[j].childNodes[0].innerHTML.substring(0,autohoh.craftList[i].length)
-					){
+					){//check if the item matches the label
 						craftingTable.childNodes[j].childNodes[5].childNodes[0].click();//click the "all" button
 						break
 					}
 				}
 			}
-		},15000)
+		},10000)//should not be a performance issue
 	},
 
 	automation : {
@@ -49,12 +49,7 @@ autohoh = {
 
 	craftList : [],
 	editCrafting : function(){
-		if(this.craftList.length < 1){
-			var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\n " + "Example: steel,plate,eludium")
-		}
-		else{
-			var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\n " + "Current: " + this.craftList)
-		};
+		var userInput = prompt("Write a list of resources separated by commas in the order you want them crafted.\nExample: steel,plate,eludium\n" + "Current: " + this.craftList);
 		if(userInput != null){//the user may cancel the prompt
 			autohoh.craftList = userInput.split(",")
 		}
