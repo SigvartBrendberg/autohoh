@@ -3,7 +3,7 @@ autohoh = {
 	setup : function(){
 		this.interFace += "<span>Autopraise: <a href=\"#\" id=\"autohoh_praise\" onclick=\"autohoh.toggle('praise')\">off</a></span><br>";
 		this.interFace += "<span>Autohunt: <a href=\"#\" id=\"autohoh_hunt\" onclick=\"autohoh.toggle('hunt')\">off</a></span><br>";
-		this.interFace += "<span onclick=\"autohoh.editCrafting()\">Autocraft: <a href=\"#\">edit</a></span>";
+		this.interFace += "<span>Autocraft: <a href=\"#\" onclick=\"autohoh.editCrafting()\">edit</a></span>";
 		var rightTabContent = document.getElementById("rightTabLog");
 		rightTabContent.innerHTML = this.interFace + rightTabContent.innerHTML; //preserve the stuff in the right tab, but insert our interface
 		var loop = setInterval(function(){//main loop, does crafting and other stuff.
